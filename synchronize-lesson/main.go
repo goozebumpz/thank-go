@@ -1,9 +1,9 @@
 package main
 
 import (
-	"synchronize-lesson/lesson9"
+	"synchronize-lesson/lesson11"
 )
 
 func main() {
-	lesson9.Test()
+	lesson11.Test2()
 }

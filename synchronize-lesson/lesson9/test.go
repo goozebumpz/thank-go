@@ -33,6 +33,7 @@ func writer(wg *sync.WaitGroup, lock *sync.RWMutex, counter map[string]int, nWri
 
 func reader(wg *sync.WaitGroup, lock *sync.RWMutex, counter map[string]int, nReads int) {
 	defer wg.Done()
+
 	for ; nReads > 0; nReads-- {
 		word := randomWord(3)
 		lock.RLock()
