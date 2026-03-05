@@ -26,8 +26,19 @@ func Test() {
 
 func Test2() {
 	var n atomic.Int32
+	var wg sync.WaitGroup
 
-	fmt.Println(n)
-	n.Store(42)
-	fmt.Println(n)
+	for i := 0; i < 5; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for i := 0; i < 10000; i++ {
+				n.Add(1)
+
+			}
+		}()
+	}
+
+	wg.Wait()
+	fmt.Println("total", n.Load())
 }
