@@ -1,7 +1,7 @@
 package main
 
-import "text/lesson2"
+import "text/lesson3"
 
 func main() {
-	lesson2.Test()
+	lesson3.Test()
 }
