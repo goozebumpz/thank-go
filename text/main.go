@@ -1,7 +1,11 @@
 package main
 
-import "text/lesson3"
+import (
+	"fmt"
+	"text-lesson/lesson12"
+)
 
 func main() {
-	lesson3.Test()
+	res := lesson12.Slugify("We haven’t killed 90% of all plankton")
+	fmt.Println(res)
 }
