@@ -1,13 +1,12 @@
 package lesson9
 
 import (
-	"fmt"
-	"log"
+	"errors"
 	"strings"
 	"time"
 )
 
-const test = `15.04.2022
+const TEXT = `15.04.2022
 8:00 - 8:30 Завтрак
 8:30 - 9:30 Оглаживание кота
 9:30 - 10:00 Интернеты
@@ -20,65 +19,43 @@ const test = `15.04.2022
 22:30 - 23:00 Оглаживание кота`
 
 type Task struct {
-	Date  time.Time
-	Dur   time.Duration
-	Title string
+	Date     time.Time
+	Duration time.Duration
+	Title    string
 }
 
-func ParseCell() {
-
+func parseDate(src string) (time.Time, error) {
+	return time.Parse("02.01.2006", src)
 }
 
-func ParsePage(src string) []Task {
-	var result []Task
-	var date time.Time
+func parseTasks(date time.Time, src []string) ([]Task, error) {
+	titles := map[string]bool{}
 
-	for _, str := range strings.Split(src, "\n") {
-		words := strings.Split(str, " ")
+	for _, line := range src {
+		description := strings.Split(line, " ")
 
-		if len(words) == 0 {
-			continue
-		}
-
-		if len(words) == 1 {
-			newDate := words[0]
-			parsedDate, err := time.Parse("02.01.2006", newDate)
-
-			if err != nil {
-				log.Fatal(err)
-			} else {
-				date = parsedDate
-				continue
-			}
-		}
-
-		if len(words) > 1 {
-			title := strings.Join(words[3:], " ")
-			from := words[0]
-			to := words[2]
-			parsedFrom := time.Time{}
-			parsedTo := time.Time{}
-
-			if len(from) == 4 {
-				parsedFrom, _ = time.Parse("3:04", from)
-			} else if len(from) == 5 {
-				parsedFrom, _ = time.Parse("03:04", from)
-			}
-
-			if len(to) == 4 {
-				parsedTo, _ = time.Parse("3:04", to)
-			} else if len(to) == 5 {
-				parsedTo, _ = time.Parse("03:04", to)
-			}
-
-			result = append(result, Task{Title: title, Date: date, Dur: parsedTo.Sub(parsedFrom)})
-		}
 	}
 
-	return result
+	return []Task{}, nil
+}
+
+func ParsePage(src string) ([]Task, error) {
+	lines := strings.Split(src, "\n")
+	date, err := parseDate(lines[0])
+
+	if err != nil {
+		return []Task{}, errors.New("error parsing date")
+	}
+
+	tasks, err := parseTasks(date, lines[1:])
+
+	if err != nil {
+		return []Task{}, errors.New("error parsing tasks")
+	}
+
+	return tasks, nil
 }
 
 func Test() {
-	res := ParsePage(test)
-	fmt.Printf("%+v", res)
+	ParsePage(TEXT)
 }
