@@ -1,9 +1,7 @@
 package main
 
-import "json-xml-csv/lesson4"
+import "json-xml-csv/lesson8"
 
 func main() {
-	lesson4.TestSecond()
-
-	//lesson4.Test()
+	lesson8.Test()
 }
